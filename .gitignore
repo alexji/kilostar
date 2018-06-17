@@ -1,0 +1,7 @@
+**.pyc
+**~
+**.aux
+**.log
+**.gz
+.ipynb_checkpoints/*
+.DS_Store
