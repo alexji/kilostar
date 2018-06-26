@@ -37,7 +37,7 @@ if __name__=="__main__":
     XLa_arr = 10**np.array([mlogXLa + x for x in [-elogXLa, 0., elogXLa]])
     Mtotarr = [mMtot] #[mMtot + x for x in [-eMtot, 0., eMtot]]:
     farr = [0.5, 1.0, 2.0] #[mf + x for x in [-ef, 0., ef]]:    
-    farr = [0.5, 0.6, 0.7] #[mf + x for x in [-ef, 0., ef]]:    
+    #farr = [0.5, 0.6, 0.7] #[mf + x for x in [-ef, 0., ef]]:    
     Harr = [.10, .13, .16]
     
     for XLa in XLa_arr:
@@ -53,5 +53,6 @@ if __name__=="__main__":
     XLa_out = []
     for f in farr:
         for H in Harr:
+            print H, f, H/(1.+f)
             XLa_out.append((H/(1.+f)))
     print("XLa = {:.3f}-{:.3f}".format(min(XLa_out), max(XLa_out)))
