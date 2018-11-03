@@ -97,6 +97,17 @@ def load_arnould_rpat(log=True):
         rpat = df["N"]
     rpat = rpat[pd.notnull(rpat)]
     return rpat
+def load_sneden_rpat(log=True):
+    df = ascii.read("sneden08_isotopes.txt").to_pandas()
+    df.rename(columns={"mass":"A"}, inplace=True)
+    index = [(Z,A) for _,(Z,A) in df[["Z","A"]].iterrows()]
+    df.index = index
+    rpat = df["Nr"] #df.groupby("A")["Nr"].sum()
+    rpat.name = "N"
+    if log:
+        rpat = np.log10(rpat)
+    rpat = rpat[pd.notnull(rpat)]
+    return rpat
 
 def find_mass_ratios(masses, Zmin=30, Z12=50):
     Z = masses.index.values
@@ -164,6 +175,25 @@ def compute_masses(rpat, get_numbers=False):
     if get_numbers:
         return masses, massesA, mean_masses, numbers, numbersA
     return masses, massesA, mean_masses
+
+def calc_mass_in_ranges(massesA, Aranges):
+    assert len(Aranges)==4
+    Mranges = []
+    for Arange in Aranges:
+        Amin, Amax = Arange
+        ix = np.logical_and(massesA.index >= Amin, massesA.index < Amax)
+        Mranges.append(np.sum(massesA[ix]))
+    return Mranges
+
+def calc_ratio_ranges(massesA, Aranges, logMAscale=0.0):
+    Mranges = calc_mass_in_ranges(massesA, Aranges)
+    MA = Mranges[0] * (10**logMAscale)
+    MB = Mranges[1] + Mranges[3]
+    MC = Mranges[2]
+    f = MA/(MB+MC)
+    H = MC/(MB+MC)
+    XLa = MC/(MA+MB+MC)
+    return f, H, XLa
 
 if __name__=="__main__":
 #def tmp():
