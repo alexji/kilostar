@@ -177,7 +177,7 @@ def compute_masses(rpat, get_numbers=False):
     return masses, massesA, mean_masses
 
 def calc_mass_in_ranges(massesA, Aranges):
-    assert len(Aranges)==4
+    #assert len(Aranges)==4
     Mranges = []
     for Arange in Aranges:
         Amin, Amax = Arange
